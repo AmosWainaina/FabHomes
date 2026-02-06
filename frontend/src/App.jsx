@@ -9,6 +9,7 @@ import About from './pages/About';
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
 import UserDashboard from './pages/user/UserDashboard';
+import './index.css';
 import './App.css';
 
 function App() {
