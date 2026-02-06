@@ -6,6 +6,9 @@ import PropertyListing from './pages/propertylisting';
 import PropertyDetails from './pages/propertydetails';
 import Contact from './pages/contact';
 import About from './pages/About';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
+import UserDashboard from './pages/user/UserDashboard';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
         </Routes>
         <Footer />
       </div>

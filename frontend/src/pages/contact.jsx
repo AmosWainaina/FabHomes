@@ -19,8 +19,18 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // You can create a contact endpoint in the backend or use a service like EmailJS
-      console.log('Contact form submitted:', formData);
+      // Map subject to inquiry_type and send to backend inquiries endpoint
+      const payload = {
+        property: null,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '',
+        message: `${formData.subject ? formData.subject + '\n\n' : ''}${formData.message}`,
+        inquiry_type: 'general'
+      };
+
+      await api.post('inquiries/', payload);
+
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
