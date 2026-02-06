@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',  # Add CORS support
+    'corsheaders',
+    'django_filters',
     'properties',
 ]
 
@@ -132,8 +134,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-# Firebase settings
-FIREBASE_CREDENTIALS_PATH = 'path/to/your/firebase/serviceAccountKey.json'  # Update with actual path
+# Firebase settings (can be set via environment variable)
+FIREBASE_CREDENTIALS_PATH = os.getenv('FIREBASE_CREDENTIALS_PATH', 'path/to/your/firebase/serviceAccountKey.json')  # Update with actual path or set env var
 
 # CORS settings - Allow frontend to access API
 CORS_ALLOWED_ORIGINS = [
@@ -148,8 +150,22 @@ CORS_ALLOW_CREDENTIALS = True
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Allow unauthenticated access for properties
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 12,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',
+        'user': '1000/hour'
+    }
 }
+
